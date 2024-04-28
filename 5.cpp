@@ -37,7 +37,42 @@ void setIO(string fileName = "") {
 }
 
 void solve() {
-       
+    string s, p;
+    cin >> s >> p;
+
+    if (p.length() == 1 || p.length() > s.length()) {
+        cout << "IMPOSSIBLE" << nl;
+        return;
+    }
+
+    int lower = 0, upper = p.length();
+    while (lower != upper) {
+        int mid = (lower + upper + 1) / 2;
+        if (s.find(p.substr(0, mid)) != string::npos) {
+            lower = mid;
+        } else {
+            upper = mid - 1;
+        }
+    }
+
+    if (lower == p.length()) {
+        cout << 0 << spc << 1 << spc << 1 << spc << p.length() - 1 << nl;
+        return;
+    }
+
+    int start = s.find(p.substr(0, lower));
+    string new_s = s.substr(0, start) + " " + s.substr(start + lower);
+    if (new_s.find(p.substr(lower)) != string::npos) {
+        cout << start << spc << lower << spc;
+        if (s.find(p.substr(lower), start + lower) == string::npos) {
+            cout << s.substr(0, start).find(p.substr(lower)) << spc;
+        } else {
+            cout << s.find(p.substr(lower), start + lower) << spc;
+        }
+        cout << p.length() - lower << nl;
+    } else {
+        cout << "IMPOSSIBLE" << nl;
+    }
 }
 
 int32_t main() {
